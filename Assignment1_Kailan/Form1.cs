@@ -4,8 +4,13 @@ namespace Assignment1_Kailan
 
     public partial class Form1 : Form
     {
+        // this bool is used to stop players from taking actions while the game is displaying a new sequence
         private bool displaying = false;
+        // this bool is used to stop players from spamming next sequence and make sure game steps are done in proper order
         private bool awaitingUserSequence = false;
+
+        private int highScore = 0;
+        private string highScorePlayerName;
 
         public Form1()
         {
@@ -69,39 +74,68 @@ namespace Assignment1_Kailan
         private void btnColours_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            if (!displaying)
+            // once the game is finished displaying the sequence and flags awaiting user input
+            if (!displaying && awaitingUserSequence)
             {
+                // each button curresponds to a number
+                // add to buttonSequencePlayer array to compare their choices with the games randomized sequence
                 if (btn.Name == "btnBlue")
                 {
-                    GameSequence.buttonSequencePlayer.Add(1);
+                    GameSequence.ButtonSequencePlayer.Add(1);
                     txtYourSequence.Text += "Blue\r\n";
                 }
                 if (btn.Name == "btnGreen")
                 {
-                    GameSequence.buttonSequencePlayer.Add(2);
+                    GameSequence.ButtonSequencePlayer.Add(2);
                     txtYourSequence.Text += "Green\r\n";
                 }
                 if (btn.Name == "btnOrange")
                 {
-                    GameSequence.buttonSequencePlayer.Add(3);
+                    GameSequence.ButtonSequencePlayer.Add(3);
                     txtYourSequence.Text += "Orange\r\n";
                 }
                 if (btn.Name == "btnPurple")
                 {
-                    GameSequence.buttonSequencePlayer.Add(4);
+                    GameSequence.ButtonSequencePlayer.Add(4);
                     txtYourSequence.Text += "Purple\r\n";
                 }
-            }
+                // every time player presses a button check sequence to make sure they have pressed buttons in the correct order
+                if(GameSequence.CheckButtonPress())
+                {
+                    if (GameSequence.CheckSequenceFinished())
+                    {
+                        lblResult.Text = $"Result:\r\nSequence correct!";
+                        lblYourScore.Text = $"Your Score: {GameSequence.ButtonSequence.Count}";
+                        awaitingUserSequence = false;
+
+                    }
+                }
+                else
+                {
+                    lblResult.Text = "Result:\nGame over! Sequence Incorrect!!";
+                    lblYourScore.Text = $"Your Score: {GameSequence.ButtonSequence.Count - 1}";
+                    awaitingUserSequence = false;
+                    GameSequence.ResetGame();
+                }
+                
+                
+            } 
         }
 
         // How to delay code in C# https://stackoverflow.com/questions/5449956/how-to-add-a-delay-for-a-2-or-3-seconds
         public async void ChangeBtnOrangeColor(int delayIncrease)
         {
+            // delay increase value received from the for loop value.
+            // for each iteration of the loop we have a longer delay 
+            // this makes sure that the buttons flash in the correct order with a delay
             await Task.Delay(1100 * delayIncrease);
             btnOrange.BackColor = Color.LightSalmon;
+            // change button color back after another delay
             await Task.Delay(800);
             btnOrange.BackColor = Color.OrangeRed;
         }
+
+        // each function works the same but is assigned to a different button since they all change different colors
         public async void ChangeBtnPurpleColor(int delayIncrease)
         {
             await Task.Delay(1100 * delayIncrease);
@@ -125,15 +159,21 @@ namespace Assignment1_Kailan
             btnGreen.BackColor = Color.ForestGreen;
         }
 
-        private async void btnStart_Click(object sender, EventArgs e)
+        // this function starts the next sequence display when the user is ready.
+        // this allows a user to pause and take a break if they wish
+        private async void btnShowNextSequence_Click(object sender, EventArgs e)
         {
-            if(!awaitingUserSequence)
+            if (!awaitingUserSequence)
             {
                 if (!displaying)
                 {
+                    lblResult.Text = "Result:";
                     displaying = true;
                     GameSequence.DisplayNextSequence(this);
-                    await Task.Delay(GameSequence.buttonSequence.Count * 1100);
+                    // add a delay before setting displaying to false and allowing the player to click the buttons again
+                    // this delay is increased based on the size of the array
+                    await Task.Delay(GameSequence.ButtonSequence.Count * 1100);
+                    // after all is finished the player will be allowed to input their sequence
                     displaying = false;
                     awaitingUserSequence = true;
                 }
@@ -147,42 +187,11 @@ namespace Assignment1_Kailan
 
         private void btnClearYourSequence_Click(object sender, EventArgs e)
         {
-            GameSequence.buttonSequencePlayer.Clear();
+            GameSequence.ButtonSequencePlayer.Clear();
             txtYourSequence.Text = "";
         }
 
-        private void btnCheckSequence_Click(object sender, EventArgs e)
-        {
-            if (!displaying)
-            {
-                awaitingUserSequence = false;
-                List<int> playerSeq = GameSequence.buttonSequencePlayer;
-                List<int> gameSeq = GameSequence.buttonSequence;
-                if ((playerSeq.Count > 0) && gameSeq.Count > 0)
-                {
-                    for (int i = 0; i < playerSeq.Count; i++)
-                    {
-                        if (playerSeq[i] != gameSeq[i])
-                        {
-
-                            lblResult.Text = "Result:\r\nGame over! Sequence Incorrect!!";
-                            lblYourScore.Text += $"Your Score: {gameSeq.Count - 1}";
-                            playerSeq.Clear();
-                            gameSeq.Clear();
-                            return;
-                        }
-                        else
-                        {
-
-                        }
-                    }
-                    lblResult.Text = $"Result:\r\nSequence correct!\r\nButtons memorized: {playerSeq.Count}";
-                    txtYourSequence.Text = "";
-                    playerSeq.Clear();
-                }
-
-            }
-        }
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -200,31 +209,42 @@ namespace Assignment1_Kailan
     }
 
 
-    class GameSequence
+    static class GameSequence
     {
         public static Random rnd = new Random();
 
-        public static List<int> buttonSequence = new List<int>();
-        public static List<int> buttonSequencePlayer = new List<int>();
+        public static List<int> ButtonSequence = new List<int>();
+        public static List<int> ButtonSequencePlayer = new List<int>();
         public static bool gameOver = false;
+        public static int HighScore = 0;
+
+        public static List<Players> HighScoreList = new List<Players>();
+
+        
 
         public static void ResetGame()
         {
             gameOver = false;
-            buttonSequence.Clear();
+            ButtonSequencePlayer.Clear();
+            ButtonSequence.Clear();
         }
+
+       
 
         public static void DisplayNextSequence(Form1 form)
         {
 
-            buttonSequence.Add(rnd.Next(1, 5));
-            for (int i = 0; i < buttonSequence.Count; i++)
+            // adds a new random value to the sequence
+            ButtonSequence.Add(rnd.Next(1, 5));
+            for (int i = 0; i < ButtonSequence.Count; i++)
             {
 
                 // MessageBox.Show(buttonSequence[i].ToString());
-                switch (buttonSequence[i])
+                // change color of correct button by sending the value saved in the array
+                switch (ButtonSequence[i])
                 {
                     case 1:
+                        // send i value to this function which increases the delay between each button flash
                         form.ChangeBtnBlueColor(i);
                         break;
 
@@ -247,6 +267,63 @@ namespace Assignment1_Kailan
             }
         }
 
+        public static bool CheckButtonPress()
+        {
+            // check last button press player made, compared to the corresponding button index of the game sequence
+            if (ButtonSequencePlayer.Last() != ButtonSequence[ButtonSequencePlayer.Count - 1])
+            {
+                
+                return false;
+                
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public static bool CheckSequenceFinished()
+        {
+
+            /*
+             * highScore = buttonSequence.Count - 1;
+             * lblHighScore.Text = (buttonSequence.Count - 1).ToString();
+             * lblYourScore.Text += "\nNEW HIGH SCORE!";
+             */
+            if (ButtonSequencePlayer.Count == ButtonSequence.Count)
+            {
+                ButtonSequencePlayer.Clear();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            /*lblResult.Text = $"Result:\r\nSequence correct!\r\nButtons memorized: {playerSeq.Count}";
+            txtYourSequence.Text = "";
+            playerSeq.Clear();*/
+            
+
+        }
+       
+
 
     }
+
+    public class Players
+    {
+        private string Name { get; set; }
+        private int Score { get; set; }
+
+        public Players(string name, int score)
+        {
+            Name = name;
+            Score = score;
+
+        }
+
+
+    }
+
 }
+
