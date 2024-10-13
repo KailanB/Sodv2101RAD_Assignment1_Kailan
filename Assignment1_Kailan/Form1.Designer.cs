@@ -34,22 +34,18 @@
             btnBlue = new Button();
             btnStart = new Button();
             btnResetGame = new Button();
-            txtYourSequence = new TextBox();
-            lblColourSequence = new Label();
-            btnClearYourSequence = new Button();
-            btnCheckSequence = new Button();
-            txtOutputHelper = new TextBox();
+            txtHighScoreList = new TextBox();
             label1 = new Label();
             lblResult = new Label();
             lblYourScore = new Label();
-            label2 = new Label();
-            lblHighScore = new Label();
+            lblCurrentHighScore = new Label();
+            lblNewHighScore = new Label();
             SuspendLayout();
             // 
             // btnGreen
             // 
             btnGreen.BackColor = Color.ForestGreen;
-            btnGreen.Location = new Point(130, 110);
+            btnGreen.Location = new Point(94, 103);
             btnGreen.Name = "btnGreen";
             btnGreen.Size = new Size(73, 66);
             btnGreen.TabIndex = 1;
@@ -61,7 +57,7 @@
             // btnOrange
             // 
             btnOrange.BackColor = Color.OrangeRed;
-            btnOrange.Location = new Point(209, 110);
+            btnOrange.Location = new Point(173, 103);
             btnOrange.Name = "btnOrange";
             btnOrange.Size = new Size(73, 66);
             btnOrange.TabIndex = 2;
@@ -73,7 +69,7 @@
             // btnPurple
             // 
             btnPurple.BackColor = Color.Indigo;
-            btnPurple.Location = new Point(288, 110);
+            btnPurple.Location = new Point(252, 103);
             btnPurple.Name = "btnPurple";
             btnPurple.Size = new Size(73, 66);
             btnPurple.TabIndex = 3;
@@ -86,7 +82,7 @@
             // 
             btnBlue.BackColor = Color.RoyalBlue;
             btnBlue.FlatAppearance.BorderColor = Color.MidnightBlue;
-            btnBlue.Location = new Point(51, 110);
+            btnBlue.Location = new Point(15, 103);
             btnBlue.Name = "btnBlue";
             btnBlue.Size = new Size(73, 66);
             btnBlue.TabIndex = 4;
@@ -97,7 +93,7 @@
             // 
             // btnStart
             // 
-            btnStart.Location = new Point(51, 69);
+            btnStart.Location = new Point(15, 62);
             btnStart.Name = "btnStart";
             btnStart.Size = new Size(139, 23);
             btnStart.TabIndex = 5;
@@ -107,7 +103,7 @@
             // 
             // btnResetGame
             // 
-            btnResetGame.Location = new Point(272, 69);
+            btnResetGame.Location = new Point(236, 62);
             btnResetGame.Name = "btnResetGame";
             btnResetGame.Size = new Size(89, 23);
             btnResetGame.TabIndex = 6;
@@ -115,114 +111,72 @@
             btnResetGame.UseVisualStyleBackColor = true;
             btnResetGame.Click += btnResetGame_Click;
             // 
-            // txtYourSequence
+            // txtHighScoreList
             // 
-            txtYourSequence.Location = new Point(51, 238);
-            txtYourSequence.Multiline = true;
-            txtYourSequence.Name = "txtYourSequence";
-            txtYourSequence.ScrollBars = ScrollBars.Vertical;
-            txtYourSequence.Size = new Size(152, 99);
-            txtYourSequence.TabIndex = 7;
-            // 
-            // lblColourSequence
-            // 
-            lblColourSequence.AutoSize = true;
-            lblColourSequence.Location = new Point(51, 207);
-            lblColourSequence.Name = "lblColourSequence";
-            lblColourSequence.Size = new Size(121, 15);
-            lblColourSequence.TabIndex = 8;
-            lblColourSequence.Text = "Your colour sequence";
-            // 
-            // btnClearYourSequence
-            // 
-            btnClearYourSequence.Location = new Point(219, 238);
-            btnClearYourSequence.Name = "btnClearYourSequence";
-            btnClearYourSequence.Size = new Size(106, 23);
-            btnClearYourSequence.TabIndex = 9;
-            btnClearYourSequence.Text = "Clear Sequence";
-            btnClearYourSequence.UseVisualStyleBackColor = true;
-            btnClearYourSequence.Click += btnClearYourSequence_Click;
-            // 
-            // btnCheckSequence
-            // 
-            btnCheckSequence.Location = new Point(504, 12);
-            btnCheckSequence.Name = "btnCheckSequence";
-            btnCheckSequence.Size = new Size(106, 23);
-            btnCheckSequence.TabIndex = 10;
-            btnCheckSequence.Text = "Check Sequence";
-            btnCheckSequence.UseVisualStyleBackColor = true;
-            // 
-            // txtOutputHelper
-            // 
-            txtOutputHelper.Location = new Point(446, 98);
-            txtOutputHelper.Multiline = true;
-            txtOutputHelper.Name = "txtOutputHelper";
-            txtOutputHelper.ScrollBars = ScrollBars.Vertical;
-            txtOutputHelper.Size = new Size(183, 262);
-            txtOutputHelper.TabIndex = 11;
+            txtHighScoreList.Location = new Point(359, 29);
+            txtHighScoreList.Multiline = true;
+            txtHighScoreList.Name = "txtHighScoreList";
+            txtHighScoreList.ScrollBars = ScrollBars.Horizontal;
+            txtHighScoreList.Size = new Size(183, 171);
+            txtHighScoreList.TabIndex = 11;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(446, 80);
+            label1.Location = new Point(359, 11);
             label1.Name = "label1";
-            label1.Size = new Size(83, 15);
+            label1.Size = new Size(70, 15);
             label1.TabIndex = 12;
-            label1.Text = "Output Helper";
+            label1.Text = "High Scores";
             // 
             // lblResult
             // 
             lblResult.AutoSize = true;
-            lblResult.Location = new Point(221, 326);
-            lblResult.MaximumSize = new Size(200, 60);
-            lblResult.MinimumSize = new Size(200, 60);
+            lblResult.Location = new Point(15, 188);
+            lblResult.MaximumSize = new Size(250, 30);
+            lblResult.MinimumSize = new Size(250, 30);
             lblResult.Name = "lblResult";
-            lblResult.Size = new Size(200, 60);
+            lblResult.Size = new Size(250, 30);
             lblResult.TabIndex = 13;
             lblResult.Text = "Result: ";
             // 
             // lblYourScore
             // 
             lblYourScore.AutoSize = true;
-            lblYourScore.Location = new Point(221, 371);
+            lblYourScore.Location = new Point(15, 218);
             lblYourScore.Name = "lblYourScore";
             lblYourScore.Size = new Size(66, 15);
             lblYourScore.TabIndex = 14;
             lblYourScore.Text = "Your Score:";
             // 
-            // label2
+            // lblCurrentHighScore
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(51, 20);
-            label2.Name = "label2";
-            label2.Size = new Size(71, 15);
-            label2.TabIndex = 15;
-            label2.Text = "High Score: ";
+            lblCurrentHighScore.AutoSize = true;
+            lblCurrentHighScore.Location = new Point(15, 13);
+            lblCurrentHighScore.Name = "lblCurrentHighScore";
+            lblCurrentHighScore.Size = new Size(71, 15);
+            lblCurrentHighScore.TabIndex = 15;
+            lblCurrentHighScore.Text = "High Score: ";
             // 
-            // lblHighScore
+            // lblNewHighScore
             // 
-            lblHighScore.AutoSize = true;
-            lblHighScore.Location = new Point(119, 20);
-            lblHighScore.Name = "lblHighScore";
-            lblHighScore.Size = new Size(34, 15);
-            lblHighScore.TabIndex = 16;
-            lblHighScore.Text = "none";
+            lblNewHighScore.AutoSize = true;
+            lblNewHighScore.Location = new Point(15, 247);
+            lblNewHighScore.Name = "lblNewHighScore";
+            lblNewHighScore.Size = new Size(0, 15);
+            lblNewHighScore.TabIndex = 17;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(641, 481);
-            Controls.Add(lblHighScore);
-            Controls.Add(label2);
+            ClientSize = new Size(598, 284);
+            Controls.Add(lblNewHighScore);
+            Controls.Add(lblCurrentHighScore);
             Controls.Add(lblYourScore);
             Controls.Add(lblResult);
             Controls.Add(label1);
-            Controls.Add(txtOutputHelper);
-            Controls.Add(btnCheckSequence);
-            Controls.Add(btnClearYourSequence);
-            Controls.Add(lblColourSequence);
-            Controls.Add(txtYourSequence);
+            Controls.Add(txtHighScoreList);
             Controls.Add(btnResetGame);
             Controls.Add(btnStart);
             Controls.Add(btnBlue);
@@ -244,15 +198,11 @@
         private Button btnBlue;
         private Button btnStart;
         private Button btnResetGame;
-        private TextBox txtYourSequence;
-        private Label lblColourSequence;
-        private Button btnClearYourSequence;
-        private Button btnCheckSequence;
-        private TextBox txtOutputHelper;
+        private TextBox txtHighScoreList;
         private Label label1;
         private Label lblResult;
         private Label lblYourScore;
-        private Label label2;
-        private Label lblHighScore;
+        private Label lblCurrentHighScore;
+        private Label lblNewHighScore;
     }
 }

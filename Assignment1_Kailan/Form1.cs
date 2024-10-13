@@ -9,6 +9,8 @@ namespace Assignment1_Kailan
         // this bool is used to stop players from spamming next sequence and make sure game steps are done in proper order
         private bool awaitingUserSequence = false;
 
+        private bool gameOver = false;
+
         private int highScore = 0;
         private string highScorePlayerName;
 
@@ -82,29 +84,25 @@ namespace Assignment1_Kailan
                 if (btn.Name == "btnBlue")
                 {
                     GameSequence.ButtonSequencePlayer.Add(1);
-                    txtYourSequence.Text += "Blue\r\n";
                 }
                 if (btn.Name == "btnGreen")
                 {
                     GameSequence.ButtonSequencePlayer.Add(2);
-                    txtYourSequence.Text += "Green\r\n";
                 }
                 if (btn.Name == "btnOrange")
                 {
                     GameSequence.ButtonSequencePlayer.Add(3);
-                    txtYourSequence.Text += "Orange\r\n";
                 }
                 if (btn.Name == "btnPurple")
                 {
                     GameSequence.ButtonSequencePlayer.Add(4);
-                    txtYourSequence.Text += "Purple\r\n";
                 }
                 // every time player presses a button check sequence to make sure they have pressed buttons in the correct order
                 if(GameSequence.CheckButtonPress())
                 {
                     if (GameSequence.CheckSequenceFinished())
                     {
-                        lblResult.Text = $"Result:\r\nSequence correct!";
+                        lblResult.Text = $"Result: Sequence correct!";
                         lblYourScore.Text = $"Your Score: {GameSequence.ButtonSequence.Count}";
                         awaitingUserSequence = false;
 
@@ -112,10 +110,33 @@ namespace Assignment1_Kailan
                 }
                 else
                 {
-                    lblResult.Text = "Result:\nGame over! Sequence Incorrect!!";
-                    lblYourScore.Text = $"Your Score: {GameSequence.ButtonSequence.Count - 1}";
+                    gameOver = true;
+                    int playerScore = GameSequence.ButtonSequence.Count - 1;
+                    lblResult.Text = "Result: Game over! Sequence Incorrect!!";
+                    lblYourScore.Text = $"Your Score: {playerScore}";
+                    if (playerScore > GameSequence.HighScore)
+                    {
+                        
+                        lblNewHighScore.Text = $"NEW HIGH SCORE {playerScore}";
+                        lblCurrentHighScore.Text = $"High Score: {playerScore}";
+                        AddHighScoreName addHighScoreForm = new AddHighScoreName();
+                        if(addHighScoreForm.ShowDialog() == DialogResult.OK)
+                        {
+                            GameSequence.HighScore = playerScore;
+                            string playerName = addHighScoreForm.InputName;
+                            GameSequence.PlayerHighScoreList.Add(new Player(playerName, playerScore));
+                            /* GameSequence.PlayerHighScoreList.OrderByDescending(player => player.Score).ToList();*/
+                            GameSequence.PlayerHighScoreList.Reverse();
+                        }
+                        txtHighScoreList.Text = "";
+                        foreach (Player player in GameSequence.PlayerHighScoreList)
+                        {
+                            txtHighScoreList.Text += player.ToString();
+                        }
+                        
+                    }
                     awaitingUserSequence = false;
-                    GameSequence.ResetGame();
+                   /* GameSequence.ResetGame();*/
                 }
                 
                 
@@ -165,7 +186,7 @@ namespace Assignment1_Kailan
         {
             if (!awaitingUserSequence)
             {
-                if (!displaying)
+                if (!displaying && !gameOver)
                 {
                     lblResult.Text = "Result:";
                     displaying = true;
@@ -185,11 +206,7 @@ namespace Assignment1_Kailan
 
         }
 
-        private void btnClearYourSequence_Click(object sender, EventArgs e)
-        {
-            GameSequence.ButtonSequencePlayer.Clear();
-            txtYourSequence.Text = "";
-        }
+
 
         
 
@@ -200,10 +217,11 @@ namespace Assignment1_Kailan
 
         private void btnResetGame_Click(object sender, EventArgs e)
         {
+            gameOver = false;
             awaitingUserSequence = false;
-            txtYourSequence.Text = "";
             lblResult.Text = "Result: ";
-            lblYourScore.Text = "";
+            lblYourScore.Text = "Your Score: ";
+            lblNewHighScore.Text = "";
             GameSequence.ResetGame();
         }
     }
@@ -218,7 +236,7 @@ namespace Assignment1_Kailan
         public static bool gameOver = false;
         public static int HighScore = 0;
 
-        public static List<Players> HighScoreList = new List<Players>();
+        public static List<Player> PlayerHighScoreList = new List<Player>();
 
         
 
@@ -310,17 +328,23 @@ namespace Assignment1_Kailan
 
     }
 
-    public class Players
+    public class Player
     {
-        private string Name { get; set; }
-        private int Score { get; set; }
+        public string Name { get; private set; }
+        public  int Score { get; private set; }
 
-        public Players(string name, int score)
+        public Player(string name, int score)
         {
             Name = name;
             Score = score;
 
         }
+
+        public override string ToString()
+        {
+            return $"{Name}: {Score}\r\n";
+        }
+
 
 
     }
