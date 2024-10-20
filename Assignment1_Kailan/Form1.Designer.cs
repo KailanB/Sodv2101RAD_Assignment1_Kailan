@@ -40,6 +40,7 @@
             lblYourScore = new Label();
             lblCurrentHighScore = new Label();
             lblNewHighScore = new Label();
+            btnHelp = new Button();
             SuspendLayout();
             // 
             // btnGreen
@@ -95,9 +96,9 @@
             // 
             btnStart.Location = new Point(15, 62);
             btnStart.Name = "btnStart";
-            btnStart.Size = new Size(139, 23);
+            btnStart.Size = new Size(94, 23);
             btnStart.TabIndex = 5;
-            btnStart.Text = "Show Next Sequence";
+            btnStart.Text = "Start Sequence";
             btnStart.UseVisualStyleBackColor = true;
             btnStart.Click += btnShowNextSequence_Click;
             // 
@@ -113,7 +114,7 @@
             // 
             // txtHighScoreList
             // 
-            txtHighScoreList.Location = new Point(359, 29);
+            txtHighScoreList.Location = new Point(359, 62);
             txtHighScoreList.Multiline = true;
             txtHighScoreList.Name = "txtHighScoreList";
             txtHighScoreList.ScrollBars = ScrollBars.Horizontal;
@@ -123,11 +124,11 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(359, 11);
+            label1.Location = new Point(359, 44);
             label1.Name = "label1";
-            label1.Size = new Size(70, 15);
+            label1.Size = new Size(87, 15);
             label1.TabIndex = 12;
-            label1.Text = "High Scores";
+            label1.Text = "All High Scores";
             // 
             // lblResult
             // 
@@ -154,9 +155,9 @@
             lblCurrentHighScore.AutoSize = true;
             lblCurrentHighScore.Location = new Point(15, 13);
             lblCurrentHighScore.Name = "lblCurrentHighScore";
-            lblCurrentHighScore.Size = new Size(71, 15);
+            lblCurrentHighScore.Size = new Size(114, 15);
             lblCurrentHighScore.TabIndex = 15;
-            lblCurrentHighScore.Text = "High Score: ";
+            lblCurrentHighScore.Text = "Current High Score: ";
             // 
             // lblNewHighScore
             // 
@@ -166,11 +167,22 @@
             lblNewHighScore.Size = new Size(0, 15);
             lblNewHighScore.TabIndex = 17;
             // 
+            // btnHelp
+            // 
+            btnHelp.Location = new Point(511, 9);
+            btnHelp.Name = "btnHelp";
+            btnHelp.Size = new Size(75, 23);
+            btnHelp.TabIndex = 18;
+            btnHelp.Text = "Help";
+            btnHelp.UseVisualStyleBackColor = true;
+            btnHelp.Click += btnHelp_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(598, 284);
+            Controls.Add(btnHelp);
             Controls.Add(lblNewHighScore);
             Controls.Add(lblCurrentHighScore);
             Controls.Add(lblYourScore);
@@ -204,5 +216,6 @@
         private Label lblYourScore;
         private Label lblCurrentHighScore;
         private Label lblNewHighScore;
+        private Button btnHelp;
     }
 }

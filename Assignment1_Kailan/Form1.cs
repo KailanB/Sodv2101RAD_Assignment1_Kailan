@@ -98,7 +98,7 @@ namespace Assignment1_Kailan
                     GameSequence.ButtonSequencePlayer.Add(4);
                 }
                 // every time player presses a button check sequence to make sure they have pressed buttons in the correct order
-                if(GameSequence.CheckButtonPress())
+                if (GameSequence.CheckButtonPress())
                 {
                     if (GameSequence.CheckSequenceFinished())
                     {
@@ -116,11 +116,11 @@ namespace Assignment1_Kailan
                     lblYourScore.Text = $"Your Score: {playerScore}";
                     if (playerScore > GameSequence.HighScore)
                     {
-                        
+
                         lblNewHighScore.Text = $"NEW HIGH SCORE {playerScore}";
                         lblCurrentHighScore.Text = $"High Score: {playerScore}";
                         AddHighScoreName addHighScoreForm = new AddHighScoreName();
-                        if(addHighScoreForm.ShowDialog() == DialogResult.OK)
+                        if (addHighScoreForm.ShowDialog() == DialogResult.OK)
                         {
                             GameSequence.HighScore = playerScore;
                             string playerName = addHighScoreForm.InputName;
@@ -133,14 +133,14 @@ namespace Assignment1_Kailan
                         {
                             txtHighScoreList.Text += player.ToString();
                         }
-                        
+
                     }
                     awaitingUserSequence = false;
-                   /* GameSequence.ResetGame();*/
+                    /* GameSequence.ResetGame();*/
                 }
-                
-                
-            } 
+
+
+            }
         }
 
         // How to delay code in C# https://stackoverflow.com/questions/5449956/how-to-add-a-delay-for-a-2-or-3-seconds
@@ -208,7 +208,7 @@ namespace Assignment1_Kailan
 
 
 
-        
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -223,6 +223,12 @@ namespace Assignment1_Kailan
             lblYourScore.Text = "Your Score: ";
             lblNewHighScore.Text = "";
             GameSequence.ResetGame();
+        }
+
+        private void btnHelp_Click(object sender, EventArgs e)
+        {
+            HelpWindow helpWindow = new HelpWindow();
+            helpWindow.Show();
         }
     }
 
